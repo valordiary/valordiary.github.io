@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Carrossel 3D de Cartas Inspiradoras - Universo</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=SF+Pro+Display:wght@400;700&display=swap');
+
+    body {
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background: #ffffff;
+      font-family: 'SF Pro Display', Arial, sans-serif;
+      overflow: hidden;
+    }
+
+    .carousel-container {
+      width: 180px;
+      height: 250px;
+      position: relative;
+      perspective: 1000px;
+      z-index: 1;
+    }
+
+    .carousel {
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      transform-style: preserve-3d;
+      transition: transform 1s;
+    }
+
+    .card {
+      position: absolute;
+      width: 140px;
+      height: 210px;
+      background-color: #000000;
+      border-radius: 8px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      backface-visibility: visible;
+      transition: transform 0.5s, opacity 0.5s;
+      cursor: pointer;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+      overflow: hidden;
+    }
+
+    .card-title {
+      font-size: 18px;
+      font-weight: bold;
+      text-align: center;
+      padding: 10px;
+      color: #ffffff;
+    }
+
+    .card-link {
+      text-decoration: none;
+      color: inherit;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+      height: 100%;
+    }
+  </style>
+</head>
+<body>
+  <div class="carousel-container">
+    <div class="carousel"></div>
+  </div>
+
+  <script>
+    const carousel = document.querySelector('.carousel');
+    const cards = [
+      { title: 'Educação' },
+      { title: 'Simplificação' },
+      { title: 'Insights' },
+      { title: 'Valor' }
+    ];
+
+    let angle = 0;
+    let autoRotateInterval;
+
+    function createCards() {
+      cards.forEach((cardData, index) => {
+        const card = document.createElement('div');
+        card.className = 'card';
+        const link = document.createElement('a');
+        link.href = 'https://www.instagram.com/valordiary?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==';
+        link.className = 'card-link';
+        link.target = '_blank';
+        link.innerHTML = `<h2 class="card-title">${cardData.title}</h2>`;
+        card.appendChild(link);
+        const rotation = index * (360 / cards.length);
+        card.style.transform = `rotateY(${rotation}deg) translateZ(220px)`;
+        carousel.appendChild(card);
+      });
+    }
+
+    function rotateCarousel() {
+      carousel.style.transform = `rotateY(${angle}deg)`;
+    }
+
+    function startAutoRotate() {
+      autoRotateInterval = setInterval(() => {
+        angle += 0.75;
+        rotateCarousel();
+      }, 50);
+    }
+
+    createCards();
+    rotateCarousel();
+    startAutoRotate();
+
+    // Previne o comportamento padrão de rolagem
+    document.addEventListener('wheel', (e) => {
+      e.preventDefault();
+    }, { passive: false });
+
+    document.querySelectorAll('.card-link').forEach(link => {
+      link.addEventListener('click', (e) => {
+        e.stopPropagation();
+      });
+    });
+  </script>
+</body>
+</html>
